@@ -2,6 +2,7 @@
 using Library.Domain.Common;
 using Library.Domain.Entities;
 using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Persistance
 {
@@ -13,29 +14,45 @@ namespace Library.Infrastructure.Persistance
         {
             _libraryContext = libraryContext;
         }
-        public Task CreateGen(Gen book, CancellationToken ct = default)
+        public async Task CreateGen(Gen gen, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            await _libraryContext.Genres.AddAsync(gen, ct);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task DeleteGen(int id, CancellationToken ct = default)
+        public async Task DeleteGen(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var genToRemove = await _libraryContext.Genres.FirstOrDefaultAsync(g => g.Id == id, ct);
+            if(genToRemove == null)
+            {
+                throw new KeyNotFoundException($"Genre with id: {id} not found!");
+            }
+            _libraryContext.Genres.Remove(genToRemove);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task<Gen> GetGenById(int id, CancellationToken ct = default)
+        public async Task<Gen?> GetGenById(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return await _libraryContext.Genres.FirstOrDefaultAsync(g => g.Id == id, ct);
         }
 
-        public Task<PaginatedList<Gen>> GetGens(int page, int pageSize, CancellationToken ct = default)
+        public async Task<PaginatedList<Gen>> GetGens(int page, int pageSize, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var total = await _libraryContext.Genres.CountAsync(ct);
+            var genres = await _libraryContext.Genres
+                .AsNoTracking()
+                .OrderBy(a => a.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            return new PaginatedList<Gen>(genres, page, (int)Math.Ceiling((double)total / pageSize));
         }
 
-        public Task UpdateGen(Gen book, CancellationToken ct = default)
+        public async Task UpdateGen(Gen gen, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            _libraryContext.Genres.Update(gen);
+            await _libraryContext.SaveChangesAsync(ct);
         }
     }
 }

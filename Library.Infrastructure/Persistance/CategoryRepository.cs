@@ -2,6 +2,7 @@
 using Library.Domain.Common;
 using Library.Domain.Entities;
 using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Persistance
 {
@@ -13,29 +14,45 @@ namespace Library.Infrastructure.Persistance
         {
             _libraryContext = libraryContext;
         }
-        public Task CreateCategory(Category book, CancellationToken ct = default)
+        public async Task CreateCategory(Category category, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            await _libraryContext.Categories.AddAsync(category, ct);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task DeleteCategory(int id, CancellationToken ct = default)
+        public async Task DeleteCategory(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var categoryToDelete = await _libraryContext.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
+            if(categoryToDelete == null)
+            {
+                throw new KeyNotFoundException($"Category with id: {id} not found!");
+            }
+            _libraryContext.Categories.Remove(categoryToDelete);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task<Category> GetCategoryById(int id, CancellationToken ct = default)
+        public async Task<Category?> GetCategoryById(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return await _libraryContext.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
         }
 
-        public Task<PaginatedList<Category>> GetCategorys(int page, int pageSize, CancellationToken ct = default)
+        public async Task<PaginatedList<Category>> GetCategorys(int page, int pageSize, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var total = await _libraryContext.Categories.CountAsync(ct);
+            var categories = await _libraryContext.Categories
+                .AsNoTracking()
+                .OrderBy(a => a.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            return new PaginatedList<Category>(categories, page, (int)Math.Ceiling((double)total / pageSize));
         }
 
-        public Task UpdateCategory(Category book, CancellationToken ct = default)
+        public async Task UpdateCategory(Category category, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            _libraryContext.Categories.Update(category);
+            await _libraryContext.SaveChangesAsync(ct);
         }
     }
 }

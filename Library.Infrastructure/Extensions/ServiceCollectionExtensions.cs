@@ -1,4 +1,6 @@
-﻿using Library.Aplication.Interfaces;
+﻿using FluentValidation;
+using Library.Aplication.DTOs.Authors;
+using Library.Aplication.Interfaces;
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +26,18 @@ namespace Library.Infrastructure.Extensions
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AuthorMappingProfile).Assembly);
+            return services;
+        }
+
+        public static IServiceCollection ConfigureValidations(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
             return services;
         }
     }

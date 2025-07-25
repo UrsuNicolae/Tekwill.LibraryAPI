@@ -2,6 +2,7 @@
 using Library.Domain.Common;
 using Library.Domain.Entities;
 using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Persistance
 {
@@ -13,29 +14,49 @@ namespace Library.Infrastructure.Persistance
         {
             _libraryContext = libraryContext;
         }
-        public Task CreateBook(Book book, CancellationToken ct = default)
+        public async Task CreateBook(Book book, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            await _libraryContext.Books.AddAsync(book, ct);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task DeleteBook(int id, CancellationToken ct = default)
+        public async Task DeleteBook(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var bookToDelete = await _libraryContext.Books.FirstOrDefaultAsync(b => b.Id == id, ct);
+            if(bookToDelete == null)
+            {
+                throw new KeyNotFoundException($"Book with Id: {id} not found!");
+            }
+
+            _libraryContext.Books.Remove(bookToDelete);
+            await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public Task<Book> GetBookById(int id, CancellationToken ct = default)
+        public async Task<Book?> GetBookById(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return await _libraryContext.Books
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .FirstOrDefaultAsync(b => b.Id == id, ct);
         }
 
-        public Task<PaginatedList<Book>> GetBooks(int page, int pageSize, CancellationToken ct = default)
+        public async Task<PaginatedList<Book>> GetBooks(int page, int pageSize, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var total = await _libraryContext.Books.CountAsync(ct);
+            var books = await _libraryContext.Books
+                .AsNoTracking()
+                .OrderBy(a => a.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            return new PaginatedList<Book>(books, page, (int)Math.Ceiling((double)total / pageSize));
         }
 
-        public Task UpdateBook(Book book, CancellationToken ct = default)
+        public async Task UpdateBook(Book book, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            _libraryContext.Books.Update(book);
+            await _libraryContext.SaveChangesAsync(ct);
         }
     }
 }

@@ -9,6 +9,9 @@ namespace Library.Infrastructure.Data
         public DbSet<Book> Books{ get; set; }
         public DbSet<Category> Categories{ get; set; }
         public DbSet<AuthorGenres> AuthorGenres{ get; set; }
+
+        public DbSet<Gen> Genres { get; set; }
+
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
         }
