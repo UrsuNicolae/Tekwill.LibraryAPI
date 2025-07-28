@@ -1,7 +1,6 @@
 
 using Library.Infrastructure.Extensions;
 using LibraryAPI.Middlewares;
-using Microsoft.AspNetCore.Diagnostics;
 
 namespace LibraryAPI
 {
@@ -14,6 +13,7 @@ namespace LibraryAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+                //.AddJsonOptions(options =>options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

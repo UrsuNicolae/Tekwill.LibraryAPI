@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Library.Domain.Entities
+﻿namespace Library.Domain.Entities
 {
     public class Book
     {

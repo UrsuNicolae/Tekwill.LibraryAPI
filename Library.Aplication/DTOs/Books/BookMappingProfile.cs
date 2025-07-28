@@ -9,7 +9,9 @@ namespace Library.Aplication.DTOs.Books
         {
             CreateMap<CreateBookDto, Book>()
                 .ReverseMap();
+
             CreateMap<Book, BookDto>()
+                .ForMember(s => s.Author, des => des.MapFrom(s => s.Author != null ? new Author(s.Author) : null))
                 .ReverseMap();
         }
     }

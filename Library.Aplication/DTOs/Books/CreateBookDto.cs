@@ -1,4 +1,7 @@
-﻿namespace Library.Aplication.DTOs.Books
+﻿using Library.Aplication.DTOs.Authors;
+using Library.Aplication.DTOs.Categories;
+
+namespace Library.Aplication.DTOs.Books
 {
     public class CreateBookDto
     {
@@ -10,6 +13,10 @@
         public string ISBN { get; set; }
 
         public int Tiraj { get; set; }
+
+        public int AuthorId { get; set; }
+
+        public CategoryDto? Category { get; set; }
 
     }
 }

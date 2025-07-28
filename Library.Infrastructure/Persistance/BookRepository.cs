@@ -9,6 +9,8 @@ namespace Library.Infrastructure.Persistance
     public class BookRepository : IBookRepository
     {
         private readonly LibraryContext _libraryContext;
+        private static readonly Func<LibraryContext, int, Task<Book?>> GetBookByIdCompiled = EF.CompileAsyncQuery((LibraryContext context, int id) => context.Books.FirstOrDefault(a => a.Id == id));
+
 
         public BookRepository(LibraryContext libraryContext)
         {
@@ -32,13 +34,8 @@ namespace Library.Infrastructure.Persistance
             await _libraryContext.SaveChangesAsync(ct);
         }
 
-        public async Task<Book?> GetBookById(int id, CancellationToken ct = default)
-        {
-            return await _libraryContext.Books
-                .Include(b => b.Author)
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(b => b.Id == id, ct);
-        }
+        public async Task<Book?> GetBookById(int id, CancellationToken ct = default) =>
+            await GetBookByIdCompiled(_libraryContext, id);
 
         public async Task<PaginatedList<Book>> GetBooks(int page, int pageSize, CancellationToken ct = default)
         {

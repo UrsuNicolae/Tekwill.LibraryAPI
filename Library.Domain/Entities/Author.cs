@@ -2,6 +2,18 @@
 {
     public class Author
     {
+        public Author()
+        {
+            
+        }
+        public Author(Author author)
+        {
+            Id = author.Id;
+            FirstName = author.FirstName;
+            LastName = author.LastName;
+            BirthDate = author.BirthDate;
+            Site = author.Site;
+        }
         public int Id { get; set; }
 
         public string FirstName { get; set; }

@@ -6,7 +6,6 @@ using Library.Aplication.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 
 namespace LibraryAPI.Controllers;
 
@@ -36,10 +35,9 @@ public class AuthorsController : ControllerBase
         var validationResult = await _validator.ValidateAsync(authorDto, cancellationToken);
         if (validationResult.IsValid)
         {
-            //var authorToCreate = _mapper.Map<Author>(authorDto);
-            //authorToCreate.Books = _mapper.Map<List<Book>>(authorDto.Books)
-            await _repository.CreateAuthor(_mapper.Map<Author>(authorDto), cancellationToken);
-            return Created();
+            var authorToCreate = _mapper.Map<Author>(authorDto);
+            await _repository.CreateAuthor(authorToCreate, cancellationToken);
+            return CreatedAtAction(nameof(Get), new {id = authorToCreate.Id}, _mapper.Map<AuthorDto>(authorToCreate));
         }
 
         return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
@@ -79,7 +77,7 @@ public class AuthorsController : ControllerBase
         if (validationResult.IsValid)
         {
             await _repository.UpdateAuthor(_mapper.Map<Author>(authorDto), cancellationToken);
-            return Created();
+            return Ok();
         }
 
         return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
