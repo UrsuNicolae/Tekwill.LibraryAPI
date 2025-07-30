@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI", "LibraryAPI\LibraryAPI.csproj", "{CD61A1B8-4958-46A3-9E9E-630A90557A7F}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Infrastructure", "Library.Infrastructure\Library.Infrastructure.csproj", "{92E16A35-928A-4F4D-9E97-D413D89933A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Tests", "Library.Tests\Library.Tests.csproj", "{375BE7A6-C839-4E56-988E-75FC4253E449}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi", "AuthApi\AuthApi.csproj", "{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{375BE7A6-C839-4E56-988E-75FC4253E449}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{375BE7A6-C839-4E56-988E-75FC4253E449}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{375BE7A6-C839-4E56-988E-75FC4253E449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

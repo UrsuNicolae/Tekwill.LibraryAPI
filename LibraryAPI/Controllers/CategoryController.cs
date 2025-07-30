@@ -1,18 +1,17 @@
 using AutoMapper;
-using FluentValidation;
 using Library.Aplication.DTOs;
-using Library.Aplication.DTOs.Authors;
 using Library.Aplication.DTOs.Categories;
 using Library.Aplication.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 
 namespace LibraryAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _repository;

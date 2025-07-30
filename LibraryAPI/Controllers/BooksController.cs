@@ -1,17 +1,17 @@
 using AutoMapper;
 using Library.Aplication.DTOs;
 using Library.Aplication.DTOs.Books;
-using Library.Aplication.DTOs.Categories;
-using Library.Aplication.DTOs.Genres;
 using Library.Aplication.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class BooksController : ControllerBase
 {
     private readonly IBookRepository _repository;

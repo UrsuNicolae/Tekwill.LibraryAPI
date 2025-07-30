@@ -5,12 +5,14 @@ using Library.Aplication.DTOs.Authors;
 using Library.Aplication.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class AuthorsController : ControllerBase
 {
     private readonly IAuthorRepository _repository;

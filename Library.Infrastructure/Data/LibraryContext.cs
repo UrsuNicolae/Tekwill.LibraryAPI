@@ -10,6 +10,8 @@ namespace Library.Infrastructure.Data
         public DbSet<Category> Categories{ get; set; }
         public DbSet<AuthorGenres> AuthorGenres{ get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public DbSet<Gen> Genres { get; set; }
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
