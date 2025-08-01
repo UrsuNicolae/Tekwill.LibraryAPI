@@ -1,4 +1,4 @@
-
+using Library.Infrastructure.Extensions;
 namespace AuthApi
 {
     public class Program
@@ -13,6 +13,9 @@ namespace AuthApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.ConfigureEfCore(builder.Configuration);
+            builder.Services.ConfigureRepositories();
+            builder.Services.ConfigureAuthService(builder.Configuration);
 
             var app = builder.Build();
 

@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
 using Library.Aplication.DTOs.Authors;
 using Library.Aplication.Interfaces;
+using Library.Infrastructure.Configurations;
 using Library.Infrastructure.Data;
+using Library.Infrastructure.ExternaServices;
+using Library.Infrastructure.Implementations;
 using Library.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +42,18 @@ namespace Library.Infrastructure.Extensions
         public static IServiceCollection ConfigureValidations(this IServiceCollection services)
         {
             services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAuthService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IGoogleService, GoogleService>();
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.Configure<GoogleConfigurations>(configuration.GetSection(GoogleConfigurations.SectionName));
+            services.AddHttpClient<IGoogleService, GoogleService>(client =>
+            {
+                client.BaseAddress = new Uri(configuration[$"{GoogleConfigurations.SectionName}:TokenUrl"]);
+            });
             return services;
         }
     }
