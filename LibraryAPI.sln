@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Tests", "Library.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi", "AuthApi\AuthApi.csproj", "{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryBot", "LibraryBot\LibraryBot.csproj", "{6991604D-4DA9-478B-8838-4C0B77E45FD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFE7E72C-DA5A-4EB5-804B-18D226A2F8B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6991604D-4DA9-478B-8838-4C0B77E45FD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6991604D-4DA9-478B-8838-4C0B77E45FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6991604D-4DA9-478B-8838-4C0B77E45FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6991604D-4DA9-478B-8838-4C0B77E45FD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
