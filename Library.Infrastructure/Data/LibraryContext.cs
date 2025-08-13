@@ -14,6 +14,10 @@ namespace Library.Infrastructure.Data
 
         public DbSet<Gen> Genres { get; set; }
 
+        public DbSet<Chat> Chats { get; set;}
+
+        public DbSet<Notification> Notifications { get; set; }
+
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
         }

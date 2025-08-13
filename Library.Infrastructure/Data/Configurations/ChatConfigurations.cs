@@ -11,8 +11,6 @@ namespace Library.Infrastructure.Data.Configurations
         {
             builder.ToTable("chats");
             builder.HasKey(b => b.Id);
-            builder.Property(p => p.UserId)
-               .IsRequired();
 
             builder.Property(p => p.FirtName)
                 .HasMaxLength(256);
@@ -21,7 +19,8 @@ namespace Library.Infrastructure.Data.Configurations
                 .HasMaxLength(256);
 
             builder.Property(p => p.UserName)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .HasDefaultValue(null);
 
             builder.Property(b => b.IsForm)
                 .HasDefaultValue(false);
