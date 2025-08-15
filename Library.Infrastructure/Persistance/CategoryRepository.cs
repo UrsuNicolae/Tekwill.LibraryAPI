@@ -33,7 +33,8 @@ namespace Library.Infrastructure.Persistance
 
         public async Task<Category?> GetCategoryById(int id, CancellationToken ct = default)
         {
-            return await _libraryContext.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
+            return await _libraryContext.Categories
+                .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
 
         public async Task<PaginatedList<Category>> GetCategorys(int page, int pageSize, CancellationToken ct = default)
