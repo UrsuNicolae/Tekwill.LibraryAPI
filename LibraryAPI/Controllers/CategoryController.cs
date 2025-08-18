@@ -38,7 +38,7 @@ public class CategoryController : ControllerBase
 
         var categories = await _repository.GetCategorys(dto.Page, dto.PageSize, cancellationToken);
         var categoriDtos = _mapper.Map<List<CategoryDto>>(categories.Items);
-        var result = new PaginatedList<CategoryDto>(categoriDtos, dto.Page, dto.PageSize);
+        var result = new PaginatedList<CategoryDto>(categoriDtos, dto.Page, categories.TotalPages);
         return Ok(result);
     }
 

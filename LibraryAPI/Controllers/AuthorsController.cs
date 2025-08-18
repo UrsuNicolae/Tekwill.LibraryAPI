@@ -56,7 +56,7 @@ public class AuthorsController : ControllerBase
 
         var authors = await _repository.GetAuthors(dto.Page, dto.PageSize, cancellationToken);
         var authorsDtos = _mapper.Map<List<AuthorDto>>(authors.Items);
-        var result = new PaginatedList<AuthorDto>(authorsDtos, dto.Page, dto.PageSize);
+        var result = new PaginatedList<AuthorDto>(authorsDtos, dto.Page, authors.TotalPages);
         return Ok(result);
     }
 

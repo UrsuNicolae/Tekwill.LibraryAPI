@@ -36,9 +36,9 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] PaginatedDto dto, CancellationToken cancellationToken)
     {
 
-        var paginatedGenres = await _repository.GetBooks(dto.Page, dto.PageSize, cancellationToken);
-        var bookDtos= _mapper.Map<List<BookDto>>(paginatedGenres.Items);
-        var result = new PaginatedList<BookDto>(bookDtos, dto.Page, dto.PageSize);
+        var paginatedBooks = await _repository.GetBooks(dto.Page, dto.PageSize, cancellationToken);
+        var bookDtos= _mapper.Map<List<BookDto>>(paginatedBooks.Items);
+        var result = new PaginatedList<BookDto>(bookDtos, dto.Page, paginatedBooks.TotalPages);
         return Ok(result);
     }
 

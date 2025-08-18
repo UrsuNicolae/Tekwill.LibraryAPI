@@ -19,6 +19,15 @@ namespace Library.Infrastructure.Persistance
             await _context.SaveChangesAsync(ct);
         }
 
+        public async Task<List<ChatNotifications>> GetAllChatsForNewBookNotification(CancellationToken ct)
+        {
+            return await _context.ChatNotifications
+                .AsNoTracking()
+                .Include(n => n.Notification)
+                .Where(n => n.Notification.NotificationType == Domain.Enums.NotificationType.NewBookNotification)
+                .ToListAsync(ct);
+        }
+
         public async Task<Chat?> GetChat(long id, CancellationToken ct = default)
         {
             return await _context.Chats.FirstOrDefaultAsync(c => c.Id == id, ct);

@@ -17,6 +17,7 @@ namespace Library.Infrastructure.Data
         public DbSet<Chat> Chats { get; set;}
 
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<ChatNotifications> ChatNotifications { get; set; }
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {

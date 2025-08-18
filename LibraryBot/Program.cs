@@ -5,6 +5,7 @@ using Library.Infrastructure.Configurations;
 using Library.Infrastructure.ExternaServices;
 using LibraryBot.Interfaces;
 using LibraryBot.Implementations;
+using Quartz;
 
 namespace LibraryBot
 {
@@ -30,6 +31,21 @@ namespace LibraryBot
                     new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 c.DefaultRequestHeaders.Add("x-app-name", builder.Configuration["LibraryApiConfig:AppName"]);
             });
+
+            builder.Services.AddQuartz(q =>
+            {
+                var notificatJobKey = new JobKey(nameof(LibraryNotificationJob));
+                q.AddJob<LibraryNotificationJob>(opts => opts.WithIdentity(notificatJobKey));
+                q.AddTrigger(opts =>
+                opts.ForJob(notificatJobKey)
+                .WithIdentity($"{notificatJobKey}_trigger")
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(10)
+                    .RepeatForever()
+                    .WithMisfireHandlingInstructionNextWithExistingCount()));
+            });
+
+            builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
             var host = builder.Build();
             host.Run();

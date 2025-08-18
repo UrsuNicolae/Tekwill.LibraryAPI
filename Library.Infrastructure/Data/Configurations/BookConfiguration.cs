@@ -21,6 +21,10 @@ namespace Library.Infrastructure.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(p => p.CreatedAt)
+                .HasDefaultValue(DateTime.UtcNow)
+                .IsRequired();
+
             builder.Property(p => p.Tiraj)
                 .IsRequired();
 
