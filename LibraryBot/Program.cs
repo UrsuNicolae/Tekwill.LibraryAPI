@@ -32,6 +32,15 @@ namespace LibraryBot
                 c.DefaultRequestHeaders.Add("x-app-name", builder.Configuration["LibraryApiConfig:AppName"]);
             });
 
+            builder.Services.AddHttpClient(Constants.OpenAiClient, (_, c) =>
+            {
+                c.BaseAddress = new Uri(builder.Configuration["OpenAi:BaseAddress"]);
+                c.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                c.DefaultRequestHeaders.Add("Authorization", "Bearer " + builder.Configuration["OpenAi:ApiKey"]);
+            });
+            builder.Services.AddScoped<IOpenAiService, OpenAiService>();
+
             builder.Services.AddQuartz(q =>
             {
                 var notificatJobKey = new JobKey(nameof(LibraryNotificationJob));
@@ -40,7 +49,7 @@ namespace LibraryBot
                 opts.ForJob(notificatJobKey)
                 .WithIdentity($"{notificatJobKey}_trigger")
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(10)
+                    .WithIntervalInSeconds(30)
                     .RepeatForever()
                     .WithMisfireHandlingInstructionNextWithExistingCount()));
             });

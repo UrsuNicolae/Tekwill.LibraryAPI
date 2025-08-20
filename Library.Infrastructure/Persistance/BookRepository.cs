@@ -9,7 +9,11 @@ namespace Library.Infrastructure.Persistance
     public class BookRepository : IBookRepository
     {
         private readonly LibraryContext _libraryContext;
-        private static readonly Func<LibraryContext, int, Task<Book?>> GetBookByIdCompiled = EF.CompileAsyncQuery((LibraryContext context, int id) => context.Books.FirstOrDefault(a => a.Id == id));
+        private static readonly Func<LibraryContext, int, Task<Book?>> GetBookByIdCompiled = EF.CompileAsyncQuery((LibraryContext context, int id) => context
+                                        .Books
+                                        .Include(b => b.Author)
+                                        .Include(b => b.Category)
+                                        .FirstOrDefault(a => a.Id == id));
 
 
         public BookRepository(LibraryContext libraryContext)
@@ -54,6 +58,17 @@ namespace Library.Infrastructure.Persistance
         {
             _libraryContext.Books.Update(book);
             await _libraryContext.SaveChangesAsync(ct);
+        }
+
+        public async Task<List<Book>> GetLatestsBooks(CancellationToken ct = default)
+        {
+            var oldDate = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(10));
+            var books = await _libraryContext
+                .Books
+                .AsNoTracking()
+                .Where(b => b.CreatedAt >= oldDate)
+                .ToListAsync(ct);
+            return books;
         }
     }
 }

@@ -11,5 +11,7 @@ namespace Library.Aplication.Interfaces
         Task CreateBook(Book book, CancellationToken ct = default);
         Task UpdateBook(Book book, CancellationToken ct = default);
         Task DeleteBook(int id, CancellationToken ct = default);
+
+        Task<List<Book>> GetLatestsBooks(CancellationToken ct = default);
     }
 }

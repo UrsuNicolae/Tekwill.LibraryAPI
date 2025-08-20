@@ -1,7 +1,13 @@
-﻿using Library.Aplication.Interfaces;
+﻿using Library.Aplication.DTOs.Books;
+using Library.Aplication.Interfaces;
+using Library.Domain.Common;
+using Library.Domain.Entities;
 using Library.Infrastructure.Persistance;
 using Quartz;
+using System.Text;
 using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types;
 
 namespace LibraryBot
 {
@@ -30,7 +36,17 @@ namespace LibraryBot
                 var chatRepo = scope.ServiceProvider.GetRequiredService<IChatRepository>();
                 var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
                 var chats = await chatRepo.GetAllChatsForNewBookNotification();
-
+                List<Book> books = await bookRepository.GetLatestsBooks();
+                if (books.Any())
+                {
+                    foreach (var chat in chats)
+                    {
+                        await _bot.SendMessage(
+                            chatId: chat.ChatId,
+                            text: FormatPaginatedBooks(books),
+                            parseMode: ParseMode.MarkdownV2);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -41,5 +57,19 @@ namespace LibraryBot
                 _logger.LogInformation($"{nameof(LibraryNotificationJob)} has ended!");
             }
         }
+
+        private string FormatPaginatedBooks(List<Book> books)//todo update notification text for user
+        {
+            var text = new StringBuilder("📚 *Books List*\n\n");
+            for(int index = 0; index < books.Count(); index++)
+            {
+                text.Append($"Nr {index + 1} \n");
+                text.Append($"📖    *{books[index].Title ?? "N/A"}*\n");
+                text.Append($"ID:   *{books[index].Id}*\n");
+                text.Append($"ISBN: *{books[index].ISBN}*\n");
+            }
+            return text.ToString();
+        }
+
     }
 }

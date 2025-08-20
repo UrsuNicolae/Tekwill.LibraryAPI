@@ -243,6 +243,40 @@ namespace LibraryBot
 
                         break;
                     }
+                case string s when s.StartsWith("/recomendation:"):
+                    {
+                        var libraryApiClient = scope.ServiceProvider.GetRequiredService<ILibraryApiClient>();
+                        var splits = s.Split(":", StringSplitOptions.RemoveEmptyEntries);
+                        if (splits.Count() == 2 &&
+                            int.TryParse(splits[1], out var id))
+                        {
+                            var book = await libraryApiClient.GetBookById(id, ct);
+                            if (book == null)
+                            {
+                                await bot.SendMessage(
+                                   chatId: chatId,
+                                   text: "Upss book not found!",
+                                   cancellationToken: ct);
+                            }
+                            else
+                            {
+                                var openAiService = scope.ServiceProvider.GetRequiredService<IOpenAiService>();
+                                var result = await openAiService.GetBookRecommandation(book);
+                                await bot.SendMessage(
+                                   chatId: chatId,
+                                   text: result,
+                                   cancellationToken: ct);
+                            }
+                        }
+                        else
+                        {
+                            await bot.SendMessage(
+                                   chatId: chatId,
+                                   text: "Invalid command",
+                                   cancellationToken: ct);
+                        }
+                        break;
+                    }
                 default:
                     await bot.SendMessage(
                                chatId: chatId,

@@ -37,7 +37,7 @@ public class BooksController : ControllerBase
     {
 
         var paginatedBooks = await _repository.GetBooks(dto.Page, dto.PageSize, cancellationToken);
-        var bookDtos= _mapper.Map<List<BookDto>>(paginatedBooks.Items);
+        var bookDtos = _mapper.Map<List<BookDto>>(paginatedBooks.Items);
         var result = new PaginatedList<BookDto>(bookDtos, dto.Page, paginatedBooks.TotalPages);
         return Ok(result);
     }
